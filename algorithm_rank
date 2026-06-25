@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranking de Algoritmos Optimizados para push_swap (100 números)</title>
+<style>
+  @page { size: A4 landscape; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #1a2332;
+    margin: 0;
+    padding: 26px 30px;
+    background: #f4f6fb;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  header {
+    border-bottom: 4px solid #2b59ff;
+    padding-bottom: 14px;
+    margin-bottom: 20px;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 24px;
+    color: #14213d;
+    letter-spacing: -0.3px;
+  }
+  header p.sub {
+    margin: 0;
+    color: #4a5568;
+    font-size: 13px;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 16px 0 22px;
+    font-size: 11px;
+  }
+  .legend .item {
+    background: #fff;
+    border: 1px solid #dde3ef;
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 1px 3px rgba(20,33,61,.06);
+  }
+  .legend .item b { color: #2b59ff; }
+  .tier { font-weight: 700; padding: 2px 8px; border-radius: 5px; color: #fff; font-size: 11px; }
+  .t-s  { background: #16a34a; }
+  .t-a  { background: #2b59ff; }
+  .t-b  { background: #d97706; }
+  .t-c  { background: #6b7280; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(20,33,61,.08);
+  }
+  thead th {
+    background: #14213d;
+    color: #fff;
+    text-align: left;
+    padding: 11px 12px;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    vertical-align: top;
+  }
+  tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #eaeef6;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) { background: #f8faff; }
+  .rank {
+    font-size: 22px;
+    font-weight: 800;
+    color: #2b59ff;
+    text-align: center;
+    width: 34px;
+  }
+  .algo-name { font-weight: 700; font-size: 13px; color: #14213d; }
+  .algo-fam { font-size: 10.5px; color: #6b7280; display:block; margin-top:3px; }
+  .moves {
+    display: inline-block;
+    background: #eef3ff;
+    color: #1e40af;
+    border: 1px solid #c7d6ff;
+    border-radius: 6px;
+    padding: 3px 7px;
+    font-weight: 700;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  code, pre {
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    font-size: 10px;
+    background: #1e293b;
+    color: #e2e8f0;
+    border-radius: 6px;
+    display: block;
+    padding: 8px 9px;
+    white-space: pre-wrap;
+    line-height: 1.45;
+  }
+  .opt-iso, .opt-combo { margin: 0 0 7px; }
+  .tag {
+    display:inline-block;
+    font-size: 9.5px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-right: 4px;
+  }
+  .tag-iso { background: #fef3c7; color: #92400e; }
+  .tag-combo { background: #dcfce7; color: #166534; }
+  .src { font-size: 10px; color: #4a5568; }
+  .src a { color: #2b59ff; text-decoration: none; }
+  .bar { height: 7px; border-radius: 4px; background: #e5e9f2; margin-top: 5px; overflow: hidden; }
+  .bar span { display:block; height:100%; border-radius:4px; }
+  footer {
+    margin-top: 22px;
+    font-size: 10.5px;
+    color: #6b7280;
+    border-top: 1px solid #dde3ef;
+    padding-top: 12px;
+  }
+  footer a { color: #2b59ff; text-decoration: none; }
+  .note {
+    background:#fff8e6; border:1px solid #f5d98a; border-radius:8px;
+    padding:10px 14px; font-size:11px; color:#7a5b00; margin-bottom:18px;
+  }
+</style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+
+<header>
+  <h1>Ranking de Algoritmos Optimizados para <em>push_swap</em> · Caso de 100 números</h1>
+  <p class="sub">Comparativa de las estrategias usadas por estudiantes de la Escuela 42 — recopilada de GitHub, YouTube, Substack/Medium, Discord/Slack y LinkedIn. Objetivo de evaluación 42: <b>&lt; 700 movimientos para 100</b> y <b>&lt; 5 500 para 500</b>.</p>
+</header>
+
+<div class="note">
+  <b>Nota metodológica:</b> los números de movimientos para 100 son medias aproximadas reportadas por los autores y comunidad (varían según el set aleatorio).
+  La columna <b>Potencial de optimización</b> distingue lo que mejora el algoritmo <span class="tag tag-iso">AISLADO</span> (por sí mismo) frente a lo que aporta <span class="tag tag-combo">COMBINADO</span> con otras técnicas.
+</div>
+
+<div class="legend">
+  <div class="item"><span class="tier t-s">TIER&nbsp;S</span> &nbsp;Óptimo para puntuación 125/125 (≤ ~550 mov.)</div>
+  <div class="item"><span class="tier t-a">TIER&nbsp;A</span> &nbsp;Aprueba con holgura (≤ ~700 mov.)</div>
+  <div class="item"><span class="tier t-b">TIER&nbsp;B</span> &nbsp;Aprueba justo / mejorable (~700–1100)</div>
+  <div class="item"><span class="tier t-c">TIER&nbsp;C</span> &nbsp;Funcional pero no apto para nota máxima</div>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th style="width:13%">Algoritmo / Familia</th>
+      <th style="width:13%">Objetivo (mov. ~100)</th>
+      <th style="width:28%">Prototipo (pseudocódigo)</th>
+      <th style="width:30%">Potencial de optimización · Aislado vs Combinado</th>
+      <th style="width:16%">Fuente (estudiante / plataforma)</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td class="rank">1</td>
+      <td>
+        <span class="algo-name">Three-Way Quick Sort sobre 4 posiciones</span>
+        <span class="algo-fam">Familia: Divide &amp; conquer / Quicksort recursivo</span>
+        <span class="tier t-s" style="margin-top:6px;display:inline-block">TIER S</span>
+      </td>
+      <td>
+        ~<b>~500–620</b> (100)<br>
+        <span class="moves">3 784 mov. medio (500)</span>
+        <div class="bar"><span style="width:96%;background:#16a34a"></span></div>
+        <span class="src">de los más eficientes con código público</span>
+      </td>
+      <td>
+<pre>map valores → rango (1..N)
+recursive_sort(chunk):
+  if base_case: static_sort(); return
+  split(chunk) → max→TOP_A
+                 mid→TOP_B
+                 min→BOTTOM_B
+  recursive_sort(max)
+  recursive_sort(mid)
+  recursive_sort(min)</pre>
+      </td>
+      <td>
+        <p class="opt-iso"><span class="tag tag-iso">AISLADO</span> Usa las 4 "posiciones" (TOP/BOTTOM de A y B); extender el <i>base case</i> a chunks de 2-3-4; pivotes dinámicos según tamaño; "Sort ASAP" y "Easy sort" (saltar tramos ya ordenados).</p>
+        <p class="opt-combo"><span class="tag tag-combo">COMBINADO</span> + post-procesado de operaciones (fusionar sa+sb→ss, ra+rb→rr) y purga de operaciones neutras (ra+rra). Pasa de 5 636 → 3 784 en 500.</p>
+      </td>
+      <td class="src">
+        <b>Ulysse Gerkens</b> (Medium/Substack + GitHub <code style="display:inline;background:none;color:#2b59ff;padding:0">ulsgks</code>)<br>
+        Referencia 42-Seoul <b>jeongble</b> (Slack/Discord, 3 720/500)
+      </td>
+    </tr>
+
+    <tr>
+      <td class="rank">2</td>
+      <td>
+        <span class="algo-name">Greedy "Cost Function" (Turk Algorithm)</span>
+        <span class="algo-fam">Familia: Selección por coste mínimo</span>
+        <span class="tier t-a" style="margin-top:6px;display:inline-block">TIER A</span>
+      </td>
+      <td>
+        ~<b>~600–680</b> (100)
+        <div class="bar"><span style="width:88%;background:#2b59ff"></span></div>
+        <span class="src">Fiable para 125/125</span>
+      </td>
+      <td>
+<pre>pb x2 (semilla en B)
+while size_a > 3:
+  for each n in A:
+    cost = rot_a + rot_b
+           (usar rr/rrr si mismo signo)
+    track cheapest
+  ejecutar movimientos cheapest; pb
+sort_3(A)
+while B: insertar en pos correcta; pa
+rotar A hasta min en top</pre>
+      </td>
+      <td>
+        <p class="opt-iso"><span class="tag tag-iso">AISLADO</span> Calcular coste combinando rotaciones simultáneas (rr/rrr) cuando A y B rotan en el mismo sentido; elegir SIEMPRE el número más barato antes de cada push.</p>
+        <p class="opt-combo"><span class="tag tag-combo">COMBINADO</span> + sort de 3 hardcodeado + colocación "encima del máx/mín" en B + post-optimización de operaciones. Muy compatible con la idea de chunks.</p>
+      </td>
+      <td class="src">
+        <b>A. Yigit Ogun</b> (Medium, 125/125) + GitHub <code style="display:inline;background:none;color:#2b59ff;padding:0">byaliego</code><br>
+        <b>alx-sch</b> "Enhancing Turk" (GitHub)
+      </td>
+    </tr>
+
+    <tr>
+      <td class="rank">3</td>
+      <td>
+        <span class="algo-name">Chunk / Insertion Sort por bloques</span>
+        <span class="algo-fam">Familia: Particionado por rangos</span>
+        <span class="tier t-a" style="margin-top:6px;display:inline-block">TIER A</span>
+      </td>
+      <td>
+        ~<b>~650–700</b> (100)
+        <div class="bar"><span style="width:82%;background:#2b59ff"></span></div>
+        <span class="src">~5 chunks para 100</span>
+      </td>
+      <td>
+<pre>dividir rango en k chunks
+  (≈5 para 100, ≈11 para 500)
+for cada chunk (de menor a mayor):
+  buscar nº del chunk en A
+   (desde top y desde bottom)
+  elegir el de menos rot (ra/rra)
+  pb (insertando ordenado en B)
+while B: traer max al top; pa</pre>
+      </td>
+      <td>
+        <p class="opt-iso"><span class="tag tag-iso">AISLADO</span> Afinar el nº de chunks empíricamente (5 para 100, 11 para 500); decidir ra vs rra según si el índice &lt; mitad de la pila; insertar manteniendo B parcialmente ordenado.</p>
+        <p class="opt-combo"><span class="tag tag-combo">COMBINADO</span> + cost-function al devolver de B→A + sort_3/sort_5 hardcodeado para los restos. Base habitual del 90–125/100.</p>
+      </td>
+      <td class="src">
+        <b>Jamie Dawson</b> (Medium/Substack, 42 Silicon Valley)<br>
+        <b>AlessandroMetta</b> (GitHub, 90/100)
+      </td>
+    </tr>
+
+    <tr>
+      <td class="rank">4</td>
+      <td>
+        <span class="algo-name">L.I.S. (Longest Increasing Subsequence)</span>
+        <span class="algo-fam">Familia: Programación dinámica + greedy</span>
+        <span class="tier t-a" style="margin-top:6px;display:inline-block">TIER A</span>
+      </td>
+      <td>
+        ~<b>~680–750</b> (100)
+        <div class="bar"><span style="width:78%;background:#2b59ff"></span></div>
+        <span class="src">125/100 reportado</span>
+      </td>
+      <td>
+<pre>lis = longest_increasing_subseq(A)
+mantener LIS en A; pb del resto a B
+while B:
+  para cada n en B: calcular mov_b
+   y mov_a (nº inmediato mayor en A)
+  combinar signos (tabla rr/rrr)
+  elegir mejor; pa
+alinear A (min al top)</pre>
+      </td>
+      <td>
+        <p class="opt-iso"><span class="tag tag-iso">AISLADO</span> Mantener la subsecuencia más larga ya ordenada en A reduce drásticamente los push; tabla de combinación de signos mov_a/mov_b para usar rr/rrr.</p>
+        <p class="opt-combo"><span class="tag tag-combo">COMBINADO</span> + cost-function en la reinserción B→A + circular buffer (array) en vez de listas enlazadas para velocidad. Riesgo de TLE si no se optimiza.</p>
+      </td>
+      <td class="src">
+        <b>Mattia Cerchi (sisittu99)</b> README L.I.S. (GitHub, 125/100)<br>
+        Slack 42 (@mcerchi)
+      </td>
+    </tr>
+
+    <tr>
+      <td class="rank">5</td>
+      <td>
+        <span class="algo-name">Radix Sort binario (bitwise)</span>
+        <span class="algo-fam">Familia: No comparativo / por dígitos</span>
+        <span class="tier t-b" style="margin-top:6px;display:inline-block">TIER B</span>
+      </td>
+      <td>
+        ~<b>~700–1100</b> (100)
+        <div class="bar"><span style="width:55%;background:#d97706"></span></div>
+        <span class="src">Simple pero menos óptimo</span>
+      </td>
+      <td>
+<pre>normalizar valores → índices 0..N-1
+max_bits = bits(N-1)
+for bit in 0..max_bits:
+  for i in 0..size_a:
+    if (top &amp; (1&lt;&lt;bit)) == 0: pb
+    else: ra
+  while B not empty: pa
+// queda ordenado al final</pre>
+      </td>
+      <td>
+        <p class="opt-iso"><span class="tag tag-iso">AISLADO</span> Mapear valores a su índice reduce los bits a procesar (complejidad ∝ nº de bits); usar rr/rrr donde aplique. Muy fácil de implementar y depurar.</p>
+        <p class="opt-combo"><span class="tag tag-combo">COMBINADO</span> Poca sinergia: procesa todos los bits aunque ya esté ordenado. Conviene combinar con sort_3/sort_5 hardcodeado para n pequeños, donde radix es ineficiente.</p>
+      </td>
+      <td class="src">
+        <b>arommers</b> (GitHub, Codam/42) · <b>hu8813</b><br>
+        <b>devnyxie</b> "Bitwise Radix Sort" (notes/Substack)
+      </td>
+    </tr>
+
+    <tr>
+      <td class="rank">6</td>
+      <td>
+        <span class="algo-name">Selection / Simple Insertion Sort</span>
+        <span class="algo-fam">Familia: Comparativo ingenuo (baseline)</span>
+        <span class="tier t-c" style="margin-top:6px;display:inline-block">TIER C</span>
+      </td>
+      <td>
+        ~<b>&gt; 2 000</b> (100)
+        <div class="bar"><span style="width:20%;background:#6b7280"></span></div>
+        <span class="src">No aprueba 100/500</span>
+      </td>
+      <td>
+<pre>while A no vacío:
+  llevar el menor de A al top (ra/rra)
+  pb
+while B no vacío:
+  pa
+// solo válido como punto de partida</pre>
+      </td>
+      <td>
+        <p class="opt-iso"><span class="tag tag-iso">AISLADO</span> Elegir ra vs rra según posición del mínimo reduce algo el coste, pero el techo es muy alto. Solo sirve como referencia conceptual.</p>
+        <p class="opt-combo"><span class="tag tag-combo">COMBINADO</span> Su valor real es evolucionarlo: añadir chunks lo convierte en el algoritmo #3; añadir cost-function lo convierte en el #2.</p>
+      </td>
+      <td class="src">
+        <b>Jamie Dawson</b> (versión inicial, Medium)<br>
+        Discusiones Reddit r/42_school / StackOverflow
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<footer>
+  <b>Fuentes consultadas (estudiantes 42 y comunidad):</b>
+  Ulysse Gerkens — <a href="https://medium.com/@ulysse.gks/push-swap-in-less-than-4200-operations-c292f034f6c0">Medium «Push Swap in less than 4200 operations»</a> &amp; GitHub ulsgks ·
+  A. Yigit Ogun — <a href="https://medium.com/@ayogun/push-swap-c1f5d2d41e97">Medium «A journey to find most efficient sorting algorithm»</a> &amp; GitHub byaliego ·
+  Jamie Dawson — <a href="https://medium.com/@jamierobertdawson/push-swap-the-least-amount-of-moves-with-two-stacks-d1e76a71789a">Medium «The least amount of moves with two stacks»</a> ·
+  Mattia Cerchi — <a href="https://github.com/sisittu99/push_swap/blob/master/README_EN.md">GitHub README L.I.S.</a> ·
+  arommers — <a href="https://github.com/arommers/push_swap">GitHub Radix Sort</a> ·
+  Anass Outiskte — <a href="https://www.linkedin.com/pulse/push-swap-art-sorting-two-stacks-anass-outiskte-bjsje">LinkedIn «The Art of Sorting with Two Stacks»</a> ·
+  YouTube (Fred «100 &amp; 500 high score», Aaron R «Demo») · 42 Slack/Discord (jeongble 3 720/500).
+  <br><br>
+  <i>Documento generado como guía comparativa. Los movimientos son aproximados y dependen del conjunto aleatorio de entrada y de las micro-optimizaciones implementadas.</i>
+</footer>
+
+</body>
+</html>
